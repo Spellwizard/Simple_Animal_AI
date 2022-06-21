@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_simple_animal_ai" default="compile.module.simple_animal_ai">
+  <dirname property="module.simple_animal_ai.basedir" file="${ant.file.module_simple_animal_ai}"/>
+  
+  <property name="module.jdk.home.simple_animal_ai" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.simple_animal_ai" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.simple_animal_ai" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.simple_animal_ai" value="-encoding UTF-8 -source 12 -target 12 ${compiler.args}"/>
+  
+  <property name="simple_animal_ai.output.dir" value="${module.simple_animal_ai.basedir}/out/production/Simple_Animal_AI"/>
+  <property name="simple_animal_ai.testoutput.dir" value="${module.simple_animal_ai.basedir}/out/test/Simple_Animal_AI"/>
+  
+  <path id="simple_animal_ai.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="simple_animal_ai.module.production.classpath">
+    <path refid="${module.jdk.classpath.simple_animal_ai}"/>
+  </path>
+  
+  <path id="simple_animal_ai.runtime.production.module.classpath">
+    <pathelement location="${simple_animal_ai.output.dir}"/>
+  </path>
+  
+  <path id="simple_animal_ai.module.classpath">
+    <path refid="${module.jdk.classpath.simple_animal_ai}"/>
+    <pathelement location="${simple_animal_ai.output.dir}"/>
+  </path>
+  
+  <path id="simple_animal_ai.runtime.module.classpath">
+    <pathelement location="${simple_animal_ai.testoutput.dir}"/>
+    <pathelement location="${simple_animal_ai.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.simple_animal_ai">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.simple_animal_ai">
+    <patternset refid="excluded.from.module.simple_animal_ai"/>
+  </patternset>
+  
+  <path id="simple_animal_ai.module.sourcepath">
+    <dirset dir="${module.simple_animal_ai.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.simple_animal_ai" depends="compile.module.simple_animal_ai.production,compile.module.simple_animal_ai.tests" description="Compile module Simple_Animal_AI"/>
+  
+  <target name="compile.module.simple_animal_ai.production" depends="register.custom.compilers" description="Compile module Simple_Animal_AI; production classes">
+    <mkdir dir="${simple_animal_ai.output.dir}"/>
+    <javac2 destdir="${simple_animal_ai.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.simple_animal_ai}/javac">
+      <compilerarg line="${compiler.args.simple_animal_ai}"/>
+      <bootclasspath refid="simple_animal_ai.module.bootclasspath"/>
+      <classpath refid="simple_animal_ai.module.production.classpath"/>
+      <src refid="simple_animal_ai.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.simple_animal_ai"/>
+    </javac2>
+    
+    <copy todir="${simple_animal_ai.output.dir}">
+      <fileset dir="${module.simple_animal_ai.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.simple_animal_ai.tests" depends="register.custom.compilers,compile.module.simple_animal_ai.production" description="compile module Simple_Animal_AI; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.simple_animal_ai" description="cleanup module">
+    <delete dir="${simple_animal_ai.output.dir}"/>
+    <delete dir="${simple_animal_ai.testoutput.dir}"/>
+  </target>
+</project>
